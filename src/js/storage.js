@@ -28,8 +28,8 @@ const Storage = {
     init: function() {
       if (!this.get('bookmarks')) {
         this.set('bookmarks', [
-          { id: 1, name: 'Poki', url: 'https://www.poki.com', icon: 'fab fa-games' },
-          { id: 2, name: 'YouTube', url: 'https://www.youtube.com', icon: 'fab fa-youtube' },
+          { id: 1, name: 'Poki', url: '../static/iframe.html#https://www.poki.com', icon: 'fab fa-games' },
+          { id: 2, name: 'YouTube', url: '../static/iframe.html#https://www.youtube.com', icon: 'fab fa-youtube' },
         ]);
       }
   

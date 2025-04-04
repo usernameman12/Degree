@@ -179,10 +179,10 @@ const Tabs = {
       }
   
       if (url.indexOf('.') > 0) {
-        return `https://${url}`;
+        return `../static/iframe.html#https://${url}`;
       }
   
-      return `https://www.google.com/search?q=${encodeURIComponent(url)}`;
+      return `../static/iframe.html#https://www.google.com/search?q=${encodeURIComponent(url)}`;
     },
   
     updateTabTitle: function(title) {

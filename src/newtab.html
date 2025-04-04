@@ -28,7 +28,7 @@
       const shortcuts = document.getElementById('shortcuts');
 
       const defaultShortcuts = [
-        { id: 1, name: 'Youtube', url: 'https://www.youtube.com', icon: 'fab fa-youtube' },
+        { id: 1, name: 'Youtube', url: '../static/iframe.html#https://www.youtube.com', icon: 'fab fa-youtube' },
       ];
 
       defaultShortcuts.forEach(shortcut => {
@@ -63,9 +63,9 @@
             if (query.match(/^https?:\/\//i)) {
               url = query;
             } else if (query.indexOf('.') > 0) {
-              url = `https://${query}`;
+              url = `../static/iframe.html#https://${query}`;
             } else {
-              url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+              url = `../static/iframe.html#https://www.google.com/search?q=${encodeURIComponent(query)}`;
             }
 
             window.location.href = url;
