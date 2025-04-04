@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search - Degree</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .search-container {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .search-iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="search-container">
+    <iframe id="search-iframe" class="search-iframe" allowfullscreen></iframe>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchIframe = document.getElementById('search-iframe');
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q');
+
+      if (query) {
+        document.title = `${query} - Search`;
+        searchIframe.src = `https://www.google.com/search?igu=1&q=${encodeURIComponent(query)}`;
+      } else {
+        searchIframe.src = 'https://www.google.com';
+      }
+      window.addEventListener('resize', adjustIframeSize);
+
+      adjustIframeSize();
+
+      function adjustIframeSize() {
+        const container = document.querySelector('.search-container');
+        searchIframe.style.width = `${container.offsetWidth}px`;
+        searchIframe.style.height = `${container.offsetHeight}px`;
+      }
+    });
+  </script>
+</body>
+</html>

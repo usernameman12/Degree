@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Degree Browser</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  
+  <div class="header">
+    <div class="logo" id="logo">Degree</div>
+  </div>
+
+  
+  <div class="tab-bar" id="tab-bar">
+    <div class="tab active" data-tab-id="tab1">
+      <span class="tab-title">New Tab</span>
+      <span class="tab-close">×</span>
+    </div>
+    <div class="new-tab" id="new-tab-button">+</div>
+  </div>
+
+  
+  <div class="nav-bar">
+    <div class="nav-buttons">
+      <div class="nav-button" id="back-button">
+        <i class="fas fa-arrow-left"></i>
+      </div>
+      <div class="nav-button" id="forward-button">
+        <i class="fas fa-arrow-right"></i>
+      </div>
+      <div class="nav-button" id="refresh-button">
+        <i class="fas fa-redo-alt"></i>
+      </div>
+      <div class="nav-button" id="home-button">
+        <i class="fas fa-home"></i>
+      </div>
+    </div>
+    <div class="address-bar">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="url-input" placeholder="Search the web or enter URL">
+    </div>
+    <div class="action-buttons">
+      <div class="action-button" id="bookmarks-button">
+        <i class="fas fa-bookmark"></i>
+      </div>
+      <div class="action-button" id="history-button">
+        <i class="fas fa-history"></i>
+      </div>
+      <div class="action-button" id="settings-button">
+        <i class="fas fa-cog"></i>
+      </div>
+      <div class="action-button" id="chat-button">
+        <i class="fas fa-comments"></i>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="browser-content" id="browser-content">
+    <div class="new-tab-page" id="new-tab-content">
+      <div class="search-container">
+        <div class="search-box">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="search-input" placeholder="Search the web">
+        </div>
+      </div>
+      <div class="shortcuts" id="shortcuts">
+        
+      </div>
+
+      
+      <div class="user-section">
+        <div class="auth-buttons" id="auth-buttons">
+          <button id="login-button">Log In</button>
+          <button id="signup-button">Sign Up</button>
+        </div>
+        <div class="user-avatar hidden" id="user-avatar">
+          <span>U</span>
+        </div>
+      </div>
+    </div>
+    <iframe id="browser-iframe" class="hidden"></iframe>
+  </div>
+
+  
+  <div class="bookmarks-panel hidden" id="bookmarks-panel">
+    <div class="bookmarks-header">
+      <h2 class="bookmarks-title">Bookmarks</h2>
+      <button class="add-bookmark" id="add-bookmark-button">Add Bookmark</button>
+    </div>
+    <div class="bookmarks-list" id="bookmarks-list">
+      
+    </div>
+  </div>
+
+  
+  <div class="history-panel hidden" id="history-panel">
+    <div class="history-header">
+      <h2 class="history-title">History</h2>
+      <button class="clear-history" id="clear-history-button">Clear History</button>
+    </div>
+    <div class="history-list" id="history-list">
+      
+    </div>
+  </div>
+
+  
+  <div class="settings-container hidden" id="settings-panel">
+    <div class="settings-section">
+      <h3 class="settings-title">Appearance</h3>
+      <div class="settings-option">
+        <label for="theme-selector">Theme</label>
+        <div class="theme-selector">
+          <div class="theme-option theme-orange-black selected" data-theme="orange-black"></div>
+          <div class="theme-option theme-blue-white" data-theme="blue-white"></div>
+          <div class="theme-option theme-green-dark" data-theme="green-dark"></div>
+          <div class="theme-option theme-purple-light" data-theme="purple-light"></div>
+          <div class="theme-option theme-red-dark" data-theme="red-dark"></div>
+        </div>
+      </div>
+    </div>
+    <div class="settings-section">
+      <h3 class="settings-title">Privacy & Security</h3>
+      <div class="settings-option">
+        <label for="clear-data">Clear browsing data</label>
+        <button class="clear-history" id="clear-data-button">Clear Data</button>
+      </div>
+    </div>
+    <div class="settings-section">
+      <h3 class="settings-title">About</h3>
+      <div class="settings-option">
+        <p>Degree Browser v1.0</p>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="chat-container hidden" id="chat-container">
+    <div class="chat-header" id="chat-header">
+      <span class="chat-title">Chat</span>
+      <span class="chat-toggle" id="chat-toggle">−</span>
+    </div>
+    <div class="chat-body" id="chat-messages">
+      
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chat-input" placeholder="Type a message...">
+      <button id="send-chat-button">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  
+  <div class="modal" id="login-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Log In</h2>
+        <span class="modal-close" id="login-close">×</span>
+      </div>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit">Log In</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="signup-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Sign Up</h2>
+        <span class="modal-close" id="signup-close">×</span>
+      </div>
+      <form id="signup-form">
+        <div class="form-group">
+          <label for="signup-username">Username</label>
+          <input type="text" id="signup-username" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit">Sign Up</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="add-bookmark-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Add Bookmark</h2>
+        <span class="modal-close" id="add-bookmark-close">×</span>
+      </div>
+      <form id="add-bookmark-form">
+        <div class="form-group">
+          <label for="bookmark-name">Name</label>
+          <input type="text" id="bookmark-name" required>
+        </div>
+        <div class="form-group">
+          <label for="bookmark-url">URL</label>
+          <input type="url" id="bookmark-url" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/tabs.js"></script>
+  <script src="js/bookmarks.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/browser.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

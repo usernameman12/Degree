@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Tab - Degree</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="new-tab-page">
+    <h1 style="color: var(--primary-color); font-size: 3rem; margin-bottom: 20px;">BubbleSurf</h1>
+
+    <div class="search-container">
+      <div class="search-box">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="search-input" placeholder="Search the web">
+      </div>
+    </div>
+
+    <div class="shortcuts" id="shortcuts">
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('search-input');
+      const shortcuts = document.getElementById('shortcuts');
+
+      const defaultShortcuts = [
+        { id: 1, name: 'Youtube', url: 'https://www.youtube.com', icon: 'fab fa-youtube' },
+      ];
+
+      defaultShortcuts.forEach(shortcut => {
+        const shortcutElement = document.createElement('div');
+        shortcutElement.className = 'shortcut';
+        shortcutElement.dataset.id = shortcut.id;
+
+        const shortcutIcon = document.createElement('div');
+        shortcutIcon.className = 'shortcut-icon';
+        shortcutIcon.innerHTML = `<i class="${shortcut.icon}"></i>`;
+
+        const shortcutName = document.createElement('div');
+        shortcutName.className = 'shortcut-name';
+        shortcutName.textContent = shortcut.name;
+
+        shortcutElement.appendChild(shortcutIcon);
+        shortcutElement.appendChild(shortcutName);
+
+        shortcutElement.addEventListener('click', () => {
+          window.location.href = shortcut.url;
+        });
+
+        shortcuts.appendChild(shortcutElement);
+      });
+
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const query = searchInput.value.trim();
+          if (query) {
+            let url;
+            if (query.match(/^https?:\/\//i)) {
+              url = query;
+            } else if (query.indexOf('.') > 0) {
+              url = `https://${query}`;
+            } else {
+              url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+            }
+
+            window.location.href = url;
+          }
+        }
+      });
+
+      searchInput.focus();
+    });
+  </script>
+</body>
+</html>

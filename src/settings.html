@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - BubbleSurf</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="logo">BubbleSurf Settings</div>
+  </div>
+
+  <div class="settings-container">
+    <div class="settings-section">
+      <h3 class="settings-title">Appearance</h3>
+      <div class="settings-option">
+        <label for="theme-selector">Theme</label>
+        <div class="theme-selector">
+          <div class="theme-option theme-orange-black" data-theme="orange-black"></div>
+          <div class="theme-option theme-blue-white" data-theme="blue-white"></div>
+          <div class="theme-option theme-green-dark" data-theme="green-dark"></div>
+          <div class="theme-option theme-purple-light" data-theme="purple-light"></div>
+          <div class="theme-option theme-red-dark" data-theme="red-dark"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3 class="settings-title">Privacy & Security</h3>
+      <div class="settings-option">
+        <label for="clear-history-btn">Clear browsing history</label>
+        <button class="clear-history" id="clear-history-btn">Clear History</button>
+      </div>
+      <div class="settings-option">
+        <label for="clear-data-btn">Clear all browsing data</label>
+        <button class="clear-history" id="clear-data-btn">Clear Data</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3 class="settings-title">About</h3>
+      <div class="settings-option">
+        <p>BubbleSurf Browser v1.0</p>
+        <p style="margin-top: 10px; font-size: 0.9rem;">A lightweight HTML-based browser interface.</p>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <button id="back-to-browser" style="background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+        <i class="fas fa-arrow-left"></i> Back to Browser
+      </button>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+
+const themeSelector = document.querySelector('.theme-selector');
+const clearHistoryBtn = document.getElementById('clear-history-btn');
+const clearDataBtn = document.getElementById('clear-data-btn');
+const backButton = document.getElementById('back-to-browser');
+
+let currentTheme = localStorage.getItem('theme');
+if (!currentTheme) {
+  currentTheme = 'orange-black';
+  localStorage.setItem('theme', currentTheme);
+}
+
+const themeOptions = document.querySelectorAll('.theme-option');
+themeOptions.forEach(option => {
+  if (option.dataset.theme === currentTheme) {
+    option.classList.add('selected');
+  }
+});
+
+themeSelector.addEventListener('click', (e) => {
+  const themeOption = e.target.closest('.theme-option');
+  if (themeOption) {
+    const theme = themeOption.dataset.theme;
+    if (theme) {
+      localStorage.setItem('theme', theme);
+
+      themeOptions.forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      themeOption.classList.add('selected');
+
+      applyTheme(theme);
+    }
+  }
+});
+
+clearHistoryBtn.addEventListener('click', () => {
+  if (confirm('Are you sure you want to clear browsing history?')) {
+    localStorage.setItem('history', JSON.stringify([]));
+    alert('Browsing history cleared!');
+  }
+});
+
+clearDataBtn.addEventListener('click', () => {
+  if (confirm('Are you sure you want to clear all browsing data? This will reset all settings.')) {
+
+    const theme = localStorage.getItem('theme');
+
+    localStorage.clear();
+
+    localStorage.setItem('theme', theme);
+
+    alert('All browsing data has been cleared!');
+  }
+});
+
+backButton.addEventListener('click', () => {
+  window.location.href = 'index.html';
+});
+
+applyTheme(currentTheme);
+
+function applyTheme(theme) {
+  const themes = {
+    'orange-black': {
+      primaryColor: '#ff8c00',
+      primaryDark: '#e67e00',
+      primaryLight: '#ffa333',
+      backgroundColor: '#1a1a1a',
+      textColor: '#ffffff',
+      secondaryBg: '#2a2a2a',
+      hoverColor: '#333333',
+      borderColor: '#3a3a3a'
+    },
+    'blue-white': {
+      primaryColor: '#4285f4',
+      primaryDark: '#3b78e7',
+      primaryLight: '#5a95f5',
+      backgroundColor: '#ffffff',
+      textColor: '#202124',
+      secondaryBg: '#f1f3f4',
+      hoverColor: '#e8eaed',
+      borderColor: '#dadce0'
+    },
+    'green-dark': {
+      primaryColor: '#34a853',
+      primaryDark: '#2d9249',
+      primaryLight: '#47b566',
+      backgroundColor: '#202124',
+      textColor: '#ffffff',
+      secondaryBg: '#303134',
+      hoverColor: '#383a3d',
+      borderColor: '#454649'
+    },
+    'purple-light': {
+      primaryColor: '#673ab7',
+      primaryDark: '#5c33a2',
+      primaryLight: '#7e57c2',
+      backgroundColor: '#f5f5f5',
+      textColor: '#3c4043',
+      secondaryBg: '#e8eaed',
+      hoverColor: '#dadce0',
+      borderColor: '#dadce0'
+    },
+    'red-dark': {
+      primaryColor: '#ea4335',
+      primaryDark: '#d33426',
+      primaryLight: '#ed6357',
+      backgroundColor: '#202124',
+      textColor: '#ffffff',
+      secondaryBg: '#303134',
+      hoverColor: '#383a3d',
+      borderColor: '#454649'
+    }
+  };
+
+  const themeConfig = themes[theme];
+  if (!themeConfig) return;
+
+  const root = document.documentElement;
+
+  root.style.setProperty('--primary-color', themeConfig.primaryColor);
+  root.style.setProperty('--primary-dark', themeConfig.primaryDark);
+  root.style.setProperty('--primary-light', themeConfig.primaryLight);
+  root.style.setProperty('--background-color', themeConfig.backgroundColor);
+  root.style.setProperty('--text-color', themeConfig.textColor);
+  root.style.setProperty('--secondary-bg', themeConfig.secondaryBg);
+  root.style.setProperty('--hover-color', themeConfig.hoverColor);
+  root.style.setProperty('--border-color', themeConfig.borderColor);
+}
+});
+  </script>
+</body>
+</html>
