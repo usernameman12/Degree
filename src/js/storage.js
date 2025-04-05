@@ -56,7 +56,7 @@ const Storage = {
   
       if (!this.get('chatMessages')) {
         this.set('chatMessages', [
-          { id: 1, sender: 'system', message: 'Welcome to Degree Chat! Feel free to chat with other users.', timestamp: new Date().toISOString() }
+          { id: 1, sender: 'system', message: 'Welcome to Hydrogen Chat! Feel free to chat with other users.', timestamp: new Date().toISOString() }
         ]);
       }
     }

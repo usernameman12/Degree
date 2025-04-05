@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Degree Browser initialized!');
+  console.log('Hydrogen Browser initialized!');
 
   window.addEventListener('error', (e) => {
     console.error('Browser error:', e.message);

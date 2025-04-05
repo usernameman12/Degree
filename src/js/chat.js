@@ -87,12 +87,12 @@ const Chat = {
         "I agree with you.",
         "That's a great point!",
         "Hello! How are you doing today?",
-        "Welcome to Degree chat!",
+        "Welcome to Hydrogen chat!",
         "Have you tried the new theme options?",
         "This browser is pretty cool, right?",
         "I like how this chat works between users.",
         "What websites do you visit the most?",
-        "How are you liking the Degree experience?",
+        "How are you liking the Hydrogen experience?",
         "this is an up-and-coming ai feature. please wait",
         "i know where you live"
       ];
@@ -101,7 +101,7 @@ const Chat = {
   
       const newMessage = {
         id: this.messages.length + 1,
-        sender: 'Degree Bot',
+        sender: 'Hydrogen Bot',
         message: randomResponse,
         timestamp: new Date().toISOString()
       };
