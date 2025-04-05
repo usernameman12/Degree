@@ -19,6 +19,8 @@ const Browser = {
 
     window.addEventListener('resize', () => this.adjustIframeSize());
     window.addEventListener('message', (event) => this.handleUvMessages(event));
+
+    this.goHome();
   },
 
   setupEventListeners: function() {
@@ -27,7 +29,6 @@ const Browser = {
         e.preventDefault();
         const url = this.urlInput.value.trim();
         if (url) {
-          console.log('Navigating to URL:', url);  // Debugging 🔥
           Tabs.navigateTo(url);
         }
       }
@@ -38,7 +39,6 @@ const Browser = {
         e.preventDefault();
         const query = this.searchInput.value.trim();
         if (query) {
-          console.log('Searching for query:', query);  // Debugging 🔥
           Tabs.navigateTo(query);
         }
       }
@@ -112,9 +112,7 @@ const Browser = {
         title: title,
         timestamp: new Date().toISOString()
       });
-    } catch (error) {
-      console.log('Could not access iframe content: ', error);
-    }
+    } catch (error) {}
   },
 
   getActualUrl: function() {
@@ -135,7 +133,6 @@ const Browser = {
       
       return currentUrl;
     } catch (error) {
-      console.log('Error getting actual URL:', error);
       return this.browserIframe.src;
     }
   },
@@ -151,16 +148,11 @@ const Browser = {
           Tabs.updateTabTitle(data.title || data.url);
         }
       }
-    } catch (error) {
-      console.log('Error handling UV message:', error);
-    }
+    } catch (error) {}
   },
 
   loadUvUrl: function(url) {
-    console.log('Loading URL in iframe:', url);  // Debugging 🔥
-
     if (!this.isValidUrl(url)) {
-      console.error('Invalid URL:', url);
       return;
     }
 
@@ -172,7 +164,6 @@ const Browser = {
     }
 
     const uvProxyUrl = `../../static/uv/go/${encodedUrl}`;
-    console.log('UV Proxy URL:', uvProxyUrl);  // Debugging 🔥
 
     this.browserIframe.src = uvProxyUrl;
     
@@ -190,7 +181,7 @@ const Browser = {
 
   isValidUrl: function(url) {
     try {
-      new URL(url);  
+      new URL(url);
       return true;
     } catch (e) {
       return false;
@@ -205,14 +196,13 @@ const Browser = {
 
   closeIframe: function() {
     this.browserIframe.classList.add('hidden');
-    this.browserIframe.src = '';  // Clear the iframe shit
+    this.browserIframe.src = ''; //clear iframe shit
   }
 };
 
 if (typeof Tabs !== 'undefined') {
   const originalNavigateTo = Tabs.navigateTo;
   Tabs.navigateTo = function(input) {
-    console.log('Tabs.navigateTo called with:', input);  // Debugging 🔥
     const url = this.formatUrl(input);
 
     const activeTab = this.tabs.find(tab => tab.id === this.currentTabId);
@@ -227,7 +217,6 @@ if (typeof Tabs !== 'undefined') {
   
   if (!Tabs.formatUrl) {
     Tabs.formatUrl = function(input) {
-      console.log('Formatting URL:', input);  // Debugging 🔥
       if (input.startsWith('http://') || input.startsWith('https://')) {
         return input;
       } else if (input.includes('.') && !input.includes(' ')) {
