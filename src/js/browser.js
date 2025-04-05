@@ -27,6 +27,7 @@ const Browser = {
         e.preventDefault();
         const url = this.urlInput.value.trim();
         if (url) {
+          console.log('Navigating to URL:', url);  // Debugging 🔥
           Tabs.navigateTo(url);
         }
       }
@@ -37,6 +38,7 @@ const Browser = {
         e.preventDefault();
         const query = this.searchInput.value.trim();
         if (query) {
+          console.log('Searching for query:', query);  // Debugging 🔥
           Tabs.navigateTo(query);
         }
       }
@@ -154,7 +156,9 @@ const Browser = {
     }
   },
 
-  loadUvUrl: function(url) { : //test the uv url
+  loadUvUrl: function(url) {
+    console.log('Loading URL in iframe:', url);  // Debugging 🔥
+
     if (!this.isValidUrl(url)) {
       console.error('Invalid URL:', url);
       return;
@@ -167,7 +171,9 @@ const Browser = {
       encodedUrl = btoa(url).replace(/\//g, '_').replace(/\+/g, '-');
     }
 
-    const uvProxyUrl = `../../static/uv/go/${encodedUrl}`; // DO NOT REMOVE FOR ANY REASON UNLESS VERIFIED
+    const uvProxyUrl = `../../static/uv/go/${encodedUrl}`;
+    console.log('UV Proxy URL:', uvProxyUrl);  // Debugging 🔥
+
     this.browserIframe.src = uvProxyUrl;
     
     this.browserIframe.classList.remove('hidden');
@@ -184,8 +190,7 @@ const Browser = {
 
   isValidUrl: function(url) {
     try {
-      // live editor showed this working sooooo its here
-      new URL(url);
+      new URL(url);  
       return true;
     } catch (e) {
       return false;
@@ -207,20 +212,22 @@ const Browser = {
 if (typeof Tabs !== 'undefined') {
   const originalNavigateTo = Tabs.navigateTo;
   Tabs.navigateTo = function(input) {
+    console.log('Tabs.navigateTo called with:', input);  // Debugging 🔥
     const url = this.formatUrl(input);
-    
+
     const activeTab = this.tabs.find(tab => tab.id === this.currentTabId);
     if (activeTab) {
       activeTab.url = url;
       this.renderTabs();
     }
-    
+
     Browser.loadUvUrl(url);
     return url;
   };
   
   if (!Tabs.formatUrl) {
     Tabs.formatUrl = function(input) {
+      console.log('Formatting URL:', input);  // Debugging 🔥
       if (input.startsWith('http://') || input.startsWith('https://')) {
         return input;
       } else if (input.includes('.') && !input.includes(' ')) {
