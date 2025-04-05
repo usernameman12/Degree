@@ -3,6 +3,7 @@ const Chat = {
   isMinimized: true,
   userId: null,
   socket: null,
+  clearInterval: null,
 
   init: function () {
     if (!Auth.currentUser) {
@@ -19,7 +20,6 @@ const Chat = {
     this.chatMessages = document.getElementById('chat-messages');
     this.chatInput = document.getElementById('chat-input');
     this.sendChatButton = document.getElementById('send-chat-button');
-    this.targetUserInput = document.getElementById('chat-target-user');
 
     this.userId = Auth.currentUser.username;
     this.messages = Storage.get('chatMessages', []);
@@ -27,6 +27,7 @@ const Chat = {
     this.setupEventListeners();
     this.setupWebSocket();
     this.renderMessages();
+    this.startClearTimer();
   },
 
   setupEventListeners: function () {
@@ -97,21 +98,19 @@ const Chat = {
     if (!Auth.currentUser) return;
 
     const message = this.chatInput.value.trim();
-    const toUser = this.getTargetUser();
-    if (!message || !toUser) return;
+    if (!message) return;
 
     const newMessage = {
       id: this.messages.length + 1,
       sender: this.userId,
-      recipient: toUser,
       message: message,
       timestamp: new Date().toISOString()
     };
 
     if (this.socket?.readyState === WebSocket.OPEN) {
       this.socket.send(JSON.stringify({
-        type: 'direct',
-        to: toUser,
+        type: 'broadcast',
+        from: this.userId,
         message: message
       }));
     }
@@ -121,10 +120,6 @@ const Chat = {
     this.renderMessage(newMessage);
     this.chatInput.value = '';
     this.scrollToBottom();
-  },
-
-  getTargetUser: function () {
-    return this.targetUserInput?.value.trim() || null;
   },
 
   renderMessages: function () {
@@ -180,6 +175,14 @@ const Chat = {
     requestAnimationFrame(() => {
       this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
     });
+  },
+
+  startClearTimer: function () {
+    setInterval(() => {
+      this.messages = [];
+      Storage.set('chatMessages', []);
+      this.chatMessages.innerHTML = '';
+    }, 20 * 60 * 1000); 
   }
 };
 
