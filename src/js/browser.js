@@ -222,7 +222,7 @@ if (typeof Tabs !== 'undefined') {
       } else if (input.includes('.') && !input.includes(' ')) {
         return 'https://' + input;
       } else {
-        return 'https://www.google.com/search?q=' + encodeURIComponent(input);
+        return 'https://www.gruble.de/search?q=' + encodeURIComponent(input);
       }
     };
   }
