@@ -6,15 +6,18 @@ const Browser = {
     this.forwardButton = document.getElementById('forward-button');
     this.refreshButton = document.getElementById('refresh-button');
     this.homeButton = document.getElementById('home-button');
-    this.browserIframe = document.getElementById('browser-iframe');
     this.logoButton = document.getElementById('logo');
     this.browserContent = document.getElementById('browser-content');
+    
+    this.browserIframe = document.createElement('iframe'); //make its own frame bc the one is /static is retarded
+    this.browserIframe.id = 'browser-iframe';
+    this.browserIframe.classList.add('browser-iframe');
+    this.browserContent.appendChild(this.browserIframe);
 
     this.setupEventListeners();
     this.adjustIframeSize();
 
     window.addEventListener('resize', () => this.adjustIframeSize());
-    // listen for UV proxy stuffs
     window.addEventListener('message', (event) => this.handleUvMessages(event));
   },
 
@@ -74,7 +77,7 @@ const Browser = {
   refresh: function() {
     const activeTab = Tabs.tabs.find(tab => tab.id === Tabs.currentTabId);
     if (activeTab && activeTab.url) {
-      this.browserIframe.src = activeTab.url;
+      this.loadUvUrl(activeTab.url);
     } else {
       this.browserIframe.contentWindow.location.reload();
     }
@@ -116,11 +119,10 @@ const Browser = {
     try {
       const iframeLocation = this.browserIframe.contentWindow.location;
       const currentUrl = iframeLocation.href;
-        // UV IMPLEMENTATION TIME HOORAHHH
+      
       if (currentUrl.includes('/uv/go/')) {
         const uvMatch = currentUrl.match(/\/uv\/go\/(.*)/);
         if (uvMatch && uvMatch[1]) {
-          // Decode the UV URL so hydrogen gets the link from the /uv/go thing
           try {
             return decodeURIComponent(uvMatch[1]);
           } catch (e) {
@@ -152,12 +154,63 @@ const Browser = {
     }
   },
 
+  loadUvUrl: function(url) {
+    let encodedUrl;
+    try {
+      encodedUrl = encodeURIComponent(url);
+    } catch (e) {
+      encodedUrl = btoa(url).replace(/\//g, '_').replace(/\+/g, '-');
+    }
+    
+    const uvProxyUrl = `/uv/go/${encodedUrl}`;
+    this.browserIframe.src = uvProxyUrl;
+    
+    this.browserIframe.classList.remove('hidden');
+    const newTabContent = document.getElementById('new-tab-content');
+    if (newTabContent) {
+      newTabContent.classList.add('hidden');
+    }
+    
+    const activeTab = Tabs.tabs.find(tab => tab.id === Tabs.currentTabId);
+    if (activeTab) {
+      activeTab.url = url;
+    }
+  },
+
   addToHistory: function(item) {
     if (typeof History !== 'undefined' && History.addToHistory) {
       History.addToHistory(item);
     }
   }
 };
+
+if (typeof Tabs !== 'undefined') {
+  const originalNavigateTo = Tabs.navigateTo;
+  Tabs.navigateTo = function(input) {
+    const url = this.formatUrl(input);
+    
+    const activeTab = this.tabs.find(tab => tab.id === this.currentTabId);
+    if (activeTab) {
+      activeTab.url = url;
+      this.renderTabs();
+    }
+    
+    Browser.loadUvUrl(url);
+    return url;
+  };
+  
+  if (!Tabs.formatUrl) {
+    Tabs.formatUrl = function(input) {
+      if (input.startsWith('http://') || input.startsWith('https://')) {
+        return input;
+      } else if (input.includes('.') && !input.includes(' ')) {
+        return 'https://' + input;
+      } else {
+        return 'https://www.google.com/search?q=' + encodeURIComponent(input);
+      }
+    };
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   Browser.init();
