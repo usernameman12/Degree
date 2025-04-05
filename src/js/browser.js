@@ -9,7 +9,7 @@ const Browser = {
     this.logoButton = document.getElementById('logo');
     this.browserContent = document.getElementById('browser-content');
     
-    this.browserIframe = document.createElement('iframe'); //make its own frame bc the one is /static is retarded
+    this.browserIframe = document.createElement('iframe');
     this.browserIframe.id = 'browser-iframe';
     this.browserIframe.classList.add('browser-iframe');
     this.browserContent.appendChild(this.browserIframe);
@@ -161,8 +161,8 @@ const Browser = {
     } catch (e) {
       encodedUrl = btoa(url).replace(/\//g, '_').replace(/\+/g, '-');
     }
-    
-    const uvProxyUrl = `/uv/go/${encodedUrl}`;
+
+    const uvProxyUrl = `../../static/uv/go/${encodedUrl}`;
     this.browserIframe.src = uvProxyUrl;
     
     this.browserIframe.classList.remove('hidden');
@@ -181,6 +181,11 @@ const Browser = {
     if (typeof History !== 'undefined' && History.addToHistory) {
       History.addToHistory(item);
     }
+  },
+
+  closeIframe: function() {
+    this.browserIframe.classList.add('hidden');
+    this.browserIframe.src = '';  // Clear the iframe shits
   }
 };
 
@@ -210,6 +215,15 @@ if (typeof Tabs !== 'undefined') {
       }
     };
   }
+
+  Tabs.onTabSelect = function(tabId) {
+    const activeTab = Tabs.tabs.find(tab => tab.id === tabId);
+    if (activeTab && activeTab.url) {
+      Browser.loadUvUrl(activeTab.url);
+    } else {
+      Browser.closeIframe();
+    }
+  };
 }
 
 document.addEventListener('DOMContentLoaded', () => {
