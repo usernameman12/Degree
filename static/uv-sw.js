@@ -1,4 +1,4 @@
-importScripts("/static/uv/uv.sw.js");
+importScripts("../static/uv/uv.sw.js"); // stawt from da root
 
 const sw = new UVServiceWorker();
 
