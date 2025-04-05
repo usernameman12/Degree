@@ -162,7 +162,7 @@ const Browser = {
       encodedUrl = btoa(url).replace(/\//g, '_').replace(/\+/g, '-');
     }
 
-    const uvProxyUrl = `../../static/uv/go/${encodedUrl}`;
+    const uvProxyUrl = `../../static/uv/go/${encodedUrl}`; // DO NOT REPLACE!!!!!!!  ../../ is to go to the root then to /static/uv/go
     this.browserIframe.src = uvProxyUrl;
     
     this.browserIframe.classList.remove('hidden');
