@@ -138,21 +138,25 @@
   </div>
 
   
-  <div class="chat-container hidden" id="chat-container">
-    <div class="chat-header" id="chat-header">
-      <span class="chat-title">Chat</span>
-      <span class="chat-toggle" id="chat-toggle">−</span>
-    </div>
-    <div class="chat-body" id="chat-messages">
-      
-    </div>
-    <div class="chat-input">
-      <input type="text" id="chat-input" placeholder="Type a message...">
-      <button id="send-chat-button">
-        <i class="fas fa-paper-plane"></i>
-      </button>
-    </div>
+<div class="chat-container hidden" id="chat-container">
+  <div class="chat-header" id="chat-header">
+    <span class="chat-title">Chat</span>
+    <span class="chat-toggle" id="chat-toggle">−</span>
   </div>
+
+  <div class="chat-body" id="chat-messages"></div>
+
+  <div class="chat-target">
+    <input type="text" id="chat-target-user" placeholder="Send to (username)">
+  </div>
+
+  <div class="chat-input">
+    <input type="text" id="chat-input" placeholder="Type a message...">
+    <button id="send-chat-button">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+</div>
 
   
   <div class="modal" id="login-modal">
