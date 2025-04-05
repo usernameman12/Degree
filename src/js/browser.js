@@ -154,7 +154,12 @@ const Browser = {
     }
   },
 
-  loadUvUrl: function(url) {
+  loadUvUrl: function(url) { : //test the uv url
+    if (!this.isValidUrl(url)) {
+      console.error('Invalid URL:', url);
+      return;
+    }
+
     let encodedUrl;
     try {
       encodedUrl = encodeURIComponent(url);
@@ -162,7 +167,7 @@ const Browser = {
       encodedUrl = btoa(url).replace(/\//g, '_').replace(/\+/g, '-');
     }
 
-    const uvProxyUrl = `../../static/uv/go/${encodedUrl}`; // DO NOT REPLACE!!!!!!!  ../../ is to go to the root then to /static/uv/go
+    const uvProxyUrl = `../../static/uv/go/${encodedUrl}`; // DO NOT REMOVE FOR ANY REASON UNLESS VERIFIED
     this.browserIframe.src = uvProxyUrl;
     
     this.browserIframe.classList.remove('hidden');
@@ -177,6 +182,16 @@ const Browser = {
     }
   },
 
+  isValidUrl: function(url) {
+    try {
+      // live editor showed this working sooooo its here
+      new URL(url);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  },
+
   addToHistory: function(item) {
     if (typeof History !== 'undefined' && History.addToHistory) {
       History.addToHistory(item);
@@ -185,7 +200,7 @@ const Browser = {
 
   closeIframe: function() {
     this.browserIframe.classList.add('hidden');
-    this.browserIframe.src = '';  // Clear the iframe shits
+    this.browserIframe.src = '';  // Clear the iframe shit
   }
 };
 
