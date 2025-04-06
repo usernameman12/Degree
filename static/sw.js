@@ -1,6 +1,6 @@
 var cacheName = 'LVcog';
 var filesToCache = [
-  'sw.js' // /js doesn't exist now does it
+  '../static/sw.js' // /js doesn't exist now does it
 ];
 
 self.addEventListener('install', function(e) {
