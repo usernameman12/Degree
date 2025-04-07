@@ -28,7 +28,7 @@ const Storage = {
     init: function() {
       if (!this.get('bookmarks')) {
         this.set('bookmarks', [
-          { id: 1, name: 'Poki', url: 'https://www.poki.com', icon: 'fab fa-games' },
+          { id: 1, name: 'daddys boy', url: 'https://www.peter.com', icon: 'fab fa-games' },
           { id: 2, name: 'YouTube', url: 'https://www.youtube.com', icon: 'fab fa-youtube' },
         ]);
       }
