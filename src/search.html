@@ -45,9 +45,9 @@
 
       if (query) {
         document.title = `${query} - Search`;
-        searchIframe.src = `/static/iframe.html#https://www.gruble.de/search?q=${encodeURIComponent(query)}`;
+        searchIframe.src = `.../static/iframe.html#https://www.gruble.de/search?q=${encodeURIComponent(query)}`;
       } else {
-        searchIframe.src = '/static/iframe.html#https://www.gruble.de/';
+        searchIframe.src = '.../static/iframe.html#https://www.gruble.de/';
       }
       window.addEventListener('resize', adjustIframeSize);
 
